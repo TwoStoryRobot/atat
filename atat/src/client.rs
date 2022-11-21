@@ -1,6 +1,8 @@
 use bbqueue::framed::FrameConsumer;
-use embedded_hal_nb::{nb, serial};
+// use embedded_hal_nb::{nb, serial};
+use embedded_hal::serial;
 use fugit::ExtU32;
+use nb;
 
 use crate::error::{Error, Response};
 use crate::helpers::LossyStr;

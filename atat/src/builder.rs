@@ -29,7 +29,7 @@ pub struct ClientBuilder<
     const RES_CAPACITY: usize,
     const URC_CAPACITY: usize,
 > where
-    Tx: embedded_hal_nb::serial::Write<u8>,
+    Tx: embedded_hal::serial::Write<u8>,
     T: fugit_timer::Timer<TIMER_HZ>,
     D: Digester,
 {
@@ -49,7 +49,7 @@ impl<
         const URC_CAPACITY: usize,
     > ClientBuilder<Tx, T, D, TIMER_HZ, BUF_LEN, RES_CAPACITY, URC_CAPACITY>
 where
-    Tx: embedded_hal_nb::serial::Write<u8>,
+    Tx: embedded_hal::serial::Write<u8>,
     T: fugit_timer::Timer<TIMER_HZ>,
     D: Digester,
 {

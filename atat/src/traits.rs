@@ -1,7 +1,8 @@
 use crate::error::{Error, InternalError};
 use crate::Mode;
-use embedded_hal_nb::nb;
+// use embedded_hal_nb::nb;
 use heapless::{String, Vec};
+use nb;
 
 /// This trait needs to be implemented for every response type.
 ///
