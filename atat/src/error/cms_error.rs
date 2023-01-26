@@ -86,31 +86,11 @@ impl From<u16> for CmsError {
 
 impl CmsError {
     pub const fn from_msg(s: &[u8]) -> Self {
-        // FIXME:
-        match s {
-            b"ME failure" => Self::MeFailure,
-            b"SMS service reserved" => Self::SmsServiceReserved,
-            b"Operation not allowed" => Self::NotAllowed,
-            b"Operation not supported" => Self::NotSupported,
-            b"Invalid PDU mode parameter" => Self::InvalidPduParameter,
-            b"Invalid text mode parameter" => Self::InvalidTextParameter,
-            b"SIM not inserted" => Self::SimNotInserted,
-            b"SIM PIN required" => Self::SimPin,
-            b"SIM failure" => Self::SimFailure,
-            b"SIM busy" => Self::SimBusy,
-            b"SIM wrong" => Self::SimWrong,
-            b"SIM PUK required" => Self::SimPuk,
-            b"Memory failure" => Self::MemoryFailure,
-            b"Invalid index" => Self::InvalidIndex,
-            b"Memory full" => Self::MemoryFull,
-            b"SMSC address unknown" => Self::SmscAddressUnknown,
-            b"No network" => Self::NoNetwork,
-            b"Network timeout" => Self::NetworkTimeout,
-            _ => Self::Unknown,
-        }
+        Self::Unknown
     }
 }
 
+#[cfg(feature = "fmt")]
 impl core::fmt::Display for CmsError {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {

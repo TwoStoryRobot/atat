@@ -1,6 +1,8 @@
+use core::fmt::Debug;
+
 /// Enumeration of Mobile Equipment errors, as defined in 3GPP TS 27.007
 /// v17.1.0, section 9.2 (Mobile termination error result code +CME ERROR).
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy, PartialEq, Eq)]
 #[repr(u16)]
 pub enum CmeError {
     /// nick=PhoneFailure
@@ -331,6 +333,14 @@ pub enum CmeError {
     WirelineAccessAreaNotAllowed = 233,
 }
 
+impl Debug for CmeError {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "CME error");
+
+        Ok(())
+    }
+}
+
 impl From<u16> for CmeError {
     fn from(v: u16) -> Self {
         match v {
@@ -504,240 +514,7 @@ impl From<u16> for CmeError {
 
 impl CmeError {
     pub const fn from_msg(s: &[u8]) -> Self {
-        // FIXME:
-        match s {
-            b"Phone failure" => Self::PhoneFailure,
-            b"No connection to phone" => Self::NoConnection,
-            b"Phone-adaptor link reserved" => Self::LinkReserved,
-            b"Operation not allowed" => Self::NotAllowed,
-            b"Operation not supported" => Self::NotSupported,
-            b"SIM not inserted" => Self::SimNotInserted,
-            b"SIM PIN required" => Self::SimPin,
-            b"SIM PUK required" => Self::SimPuk,
-            b"SIM failure" => Self::SimFailure,
-            b"SIM busy" => Self::SimBusy,
-            b"SIM wrong" => Self::SimWrong,
-            b"Incorrect password" => Self::IncorrectPassword,
-            b"Not found" => Self::NotFound,
-            b"No network service" => Self::NoNetwork,
-            b"Network timeout" => Self::NetworkTimeout,
-            b"Incorrect parameters" => Self::IncorrectParameters,
-            _ => Self::Unknown,
-        }
-    }
-}
-
-impl core::fmt::Display for CmeError {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        match self {
-            Self::PhoneFailure => write!(f, "Phone failure"),
-            Self::NoConnection => write!(f, "No connection to phone"),
-            Self::LinkReserved => write!(f, "Phone-adaptor link reserved"),
-            Self::NotAllowed => write!(f, "Operation not allowed"),
-            Self::NotSupported => write!(f, "Operation not supported"),
-            Self::PhSimPin => write!(f, "PH-SIM PIN required"),
-            Self::PhFsimPin => write!(f, "PH-FSIM PIN required"),
-            Self::PhFsimPuk => write!(f, "PH-FSIM PUK required"),
-            Self::SimNotInserted => write!(f, "SIM not inserted"),
-            Self::SimPin => write!(f, "SIM PIN required"),
-            Self::SimPuk => write!(f, "SIM PUK required"),
-            Self::SimFailure => write!(f, "SIM failure"),
-            Self::SimBusy => write!(f, "SIM busy"),
-            Self::SimWrong => write!(f, "SIM wrong"),
-            Self::IncorrectPassword => write!(f, "Incorrect password"),
-            Self::SimPin2 => write!(f, "SIM PIN2 required"),
-            Self::SimPuk2 => write!(f, "SIM PUK2 required"),
-            Self::MemoryFull => write!(f, "Memory full"),
-            Self::InvalidIndex => write!(f, "Invalid index"),
-            Self::NotFound => write!(f, "Not found"),
-            Self::MemoryFailure => write!(f, "Memory failure"),
-            Self::TextTooLong => write!(f, "Text string too long"),
-            Self::InvalidChars => write!(f, "Invalid characters in text string"),
-            Self::DialStringTooLong => write!(f, "Dial string too long"),
-            Self::DialStringInvalid => write!(f, "Invalid characters in dial string"),
-            Self::NoNetwork => write!(f, "No network service"),
-            Self::NetworkTimeout => write!(f, "Network timeout"),
-            Self::NetworkNotAllowed => write!(f, "Network not allowed - emergency calls only"),
-            Self::NetworkPin => write!(f, "Network personalization PIN required"),
-            Self::NetworkPuk => write!(f, "Network personalization PUK required"),
-            Self::NetworkSubsetPin => write!(f, "Network subset personalization PIN required"),
-            Self::NetworkSubsetPuk => write!(f, "Network subset personalization PUK required"),
-            Self::ServicePin => write!(f, "Service provider personalization PIN required"),
-            Self::ServicePuk => write!(f, "Service provider personalization PUK required"),
-            Self::CorpPin => write!(f, "Corporate personalization PIN required"),
-            Self::CorpPuk => write!(f, "Corporate personalization PUK required"),
-            Self::HiddenKeyRequired => write!(f, "Hidden key required"),
-            Self::EapMethodNotSupported => write!(f, "EAP method not supported"),
-            Self::IncorrectParameters => write!(f, "Incorrect parameters"),
-            Self::CommandDisabled => write!(f, "Command disabled"),
-            Self::CommandAborted => write!(f, "Command aborted"),
-            Self::NotAttachedRestricted => write!(f, "Not attached] restricted"),
-            Self::NotAllowedEmergencyOnly => write!(f, "Not allowed] emergency only"),
-            Self::NotAllowedRestricted => write!(f, "Not allowed] restricted"),
-            Self::FixedDialNumberOnly => write!(f, "Fixed dial number only"),
-            Self::TemporarilyOutOfService => write!(f, "Temporarily out of service"),
-            Self::LanguageOrAlphabetNotSupported => write!(f, "Language or alphabet not supported"),
-            Self::UnexpectedDataValue => write!(f, "Unexpected data value"),
-            Self::SystemFailure => write!(f, "System failure"),
-            Self::DataMissing => write!(f, "Data missing"),
-            Self::CallBarred => write!(f, "Call barred"),
-            Self::MessageWaitingIndicationSubscriptionFailure => {
-                write!(f, "Message waiting indication subscription failure")
-            }
-            Self::Unknown => write!(f, "Unknown error"),
-            Self::ImsiUnknownInHss => write!(f, "IMSI unknown in HLR/HSS"),
-            Self::IllegalUe => write!(f, "Illegal MS/UE"),
-            Self::ImsiUnknownInVlr => write!(f, "IMSI unknown in VLR"),
-            Self::ImeiNotAccepted => write!(f, "IMEI not accepted"),
-            Self::IllegalMe => write!(f, "Illegal ME"),
-            Self::PsServicesNotAllowed => write!(f, "PS services not allowed"),
-            Self::PsAndNonPsServicesNotAllowed => write!(f, "PS and non-PS services not allowed"),
-            Self::UeIdentityNotDerivedFromNetwork => {
-                write!(f, "UE identity not derived from network")
-            }
-            Self::ImplicitlyDetached => write!(f, "Implicitly detached"),
-            Self::PlmnNotAllowed => write!(f, "PLMN not allowed"),
-            Self::AreaNotAllowed => write!(f, "Location/tracking area not allowed"),
-            Self::RoamingNotAllowedInArea => {
-                write!(f, "Roaming not allowed in this location/tracking area")
-            }
-            Self::PsServicesNotAllowedInPlmn => write!(f, "PS services not allowed in PLMN"),
-            Self::NoCellsInArea => write!(f, "No cells in location/tracking area"),
-            Self::MscTemporarilyNotReachable => write!(f, "MSC temporarily not reachable"),
-            Self::NetworkFailureAttach => write!(f, "Network failure (attach)"),
-            Self::CsDomainUnavailable => write!(f, "CS domain unavailable"),
-            Self::EsmFailure => write!(f, "ESM failure"),
-            Self::Congestion => write!(f, "Congestion"),
-            Self::MbmsBearerCapabilitiesInsufficientForService => {
-                write!(f, "MBMS bearer capabilities insufficient for service")
-            }
-            Self::NotAuthorizedForCsg => write!(f, "Not authorized for CSG"),
-            Self::InsufficientResources => write!(f, "Insufficient resources"),
-            Self::MissingOrUnknownApn => write!(f, "Missing or unknown APN"),
-            Self::UnknownPdpAddressOrType => write!(f, "Unknown PDP address or type"),
-            Self::UserAuthenticationFailed => write!(f, "User authentication failed"),
-            Self::ActivationRejectedByGgsnOrGw => write!(f, "Activation rejected by GGSN or GW"),
-            Self::ActivationRejectedUnspecified => write!(f, "Activation rejected (unspecified)"),
-            Self::ServiceOptionNotSupported => write!(f, "Service option not supported"),
-            Self::ServiceOptionNotSubscribed => {
-                write!(f, "Requested service option not subscribed")
-            }
-            Self::ServiceOptionOutOfOrder => write!(f, "Service option temporarily out of order"),
-            Self::NsapiOrPtiAlreadyInUse => write!(f, "NSAPI/PTI already in use"),
-            Self::RegularDeactivation => write!(f, "Regular deactivation"),
-            Self::QosNotAccepted => write!(f, "QoS not accepted"),
-            Self::CallCannotBeIdentified => write!(f, "Call cannot be identified"),
-            Self::CsServiceTemporarilyUnavailable => {
-                write!(f, "CS service temporarily unavailable")
-            }
-            Self::FeatureNotSupported => write!(f, "Feature not supported"),
-            Self::SemanticErrorInTftOperation => write!(f, "Semantic error in TFT operation"),
-            Self::SyntacticalErrorInTftOperation => write!(f, "Syntactical error in TFT operation"),
-            Self::UnknownPdpContext => write!(f, "Unknown PDP context"),
-            Self::SemanticErrorsInPacketFilter => write!(f, "Semantic error in packet filter"),
-            Self::SyntacticalErrorInPacketFilter => write!(f, "Syntactical error in packet filter"),
-            Self::PdpContextWithoutTftAlreadyActivated => {
-                write!(f, "PDP context without TFT already activated")
-            }
-            Self::MulticastGroupMembershipTimeout => {
-                write!(f, "Multicast group membership timeout")
-            }
-            Self::GprsUnknown => write!(f, "Unspecified GPRS error"),
-            Self::PdpAuthFailure => write!(f, "PDP authentication failure"),
-            Self::InvalidMobileClass => write!(f, "Invalid mobile class"),
-            Self::LastPdnDisconnectionNotAllowedLegacy => {
-                write!(f, "Last PDN disconnection not allowed (legacy)")
-            }
-            Self::LastPdnDisconnectionNotAllowed => write!(f, "Last PDN disconnection not allowed"),
-            Self::SemanticallyIncorrectMessage => write!(f, "Semantically incorrect message"),
-            Self::InvalidMandatoryInformation => write!(f, "Invalid mandatory information"),
-            Self::MessageTypeNotImplemented => write!(f, "Message type not implemented"),
-            Self::ConditionalIeError => write!(f, "Conditional IE error"),
-            Self::UnspecifiedProtocolError => write!(f, "Unspecified protocol error"),
-            Self::OperatorDeterminedBarring => write!(f, "Operator determined barring"),
-            Self::MaximumNumberOfBearersReached => {
-                write!(f, "Maximum number of PDP/bearer contexts reached")
-            }
-            Self::RequestedApnNotSupported => write!(f, "Requested APN not supported"),
-            Self::RequestRejectedBcmViolation => write!(f, "Rejected BCM violation"),
-            Self::UnsupportedQciOr5QiValue => write!(f, "Unsupported QCI/5QI value"),
-            Self::UserDataViaControlPlaneCongested => {
-                write!(f, "User data via control plane congested")
-            }
-            Self::SmsProvidedViaGprsInRoutingArea => {
-                write!(f, "SMS provided via GPRS in routing area")
-            }
-            Self::InvalidPtiValue => write!(f, "Invalid PTI value"),
-            Self::NoBearerActivated => write!(f, "No bearer activated"),
-            Self::MessageNotCompatibleWithProtocolState => {
-                write!(f, "Message not compatible with protocol state")
-            }
-            Self::RecoveryOnTimerExpiry => write!(f, "Recovery on timer expiry"),
-            Self::InvalidTransactionIdValue => write!(f, "Invalid transaction ID value"),
-            Self::ServiceOptionNotAuthorizedInPlmn => {
-                write!(f, "Service option not authorized in PLMN")
-            }
-            Self::NetworkFailureActivation => write!(f, "Network failure (activation)"),
-            Self::ReactivationRequested => write!(f, "Reactivation requested"),
-            Self::Ipv4OnlyAllowed => write!(f, "IPv4 only allowed"),
-            Self::Ipv6OnlyAllowed => write!(f, "IPv6 only allowed"),
-            Self::SingleAddressBearersOnlyAllowed => {
-                write!(f, "Single address bearers only allowed")
-            }
-            Self::CollisionWithNetworkInitiatedRequest => {
-                write!(f, "Collision with network initiated request")
-            }
-            Self::Ipv4V6OnlyAllowed => write!(f, "IPv4v6 only allowed"),
-            Self::NonIpOnlyAllowed => write!(f, "Non-IP only allowed"),
-            Self::BearerHandlingUnsupported => write!(f, "Bearer handling unsupported"),
-            Self::ApnRestrictionIncompatible => write!(f, "APN restriction incompatible"),
-            Self::MultipleAccessToPdnConnectionNotAllowed => {
-                write!(f, "Multiple access to PDN connection not allowed")
-            }
-            Self::EsmInformationNotReceived => write!(f, "ESM information not received"),
-            Self::PdnConnectionNonexistent => write!(f, "PDN connection nonexistent"),
-            Self::MultiplePdnConnectionSameApnNotAllowed => {
-                write!(f, "Multiple PDN connection to same APN not allowed")
-            }
-            Self::SevereNetworkFailure => write!(f, "Severe network failure"),
-            Self::InsufficientResourcesForSliceAndDnn => {
-                write!(f, "Insufficient resources for slice and DNN")
-            }
-            Self::UnsupportedSscMode => write!(f, "Unsupported SSC mode"),
-            Self::InsufficientResourcesForSlice => write!(f, "Insufficient resources for slice"),
-            Self::MessageTypeNotCompatibleWithProtocolState => {
-                write!(f, "Message type not compatible with protocol state")
-            }
-            Self::IeNotImplemented => write!(f, "IE not implemented"),
-            Self::N1ModeNotAllowed => write!(f, "N1 mode not allowed"),
-            Self::RestrictedServiceArea => write!(f, "Restricted service area"),
-            Self::LadnUnavailable => write!(f, "LADN unavailable"),
-            Self::MissingOrUnknownDnnInSlice => write!(f, "Missing or unknown DNN in slice"),
-            Self::NgksiAlreadyInUse => write!(f, "ngKSI already in use"),
-            Self::PayloadNotForwarded => write!(f, "Payload not forwarded"),
-            Self::Non3GppAccessTo5GcnNotAllowed => write!(f, "Non-3GPP access to 5GCN not allowed"),
-            Self::ServingNetworkNotAuthorized => write!(f, "Serving network not authorized"),
-            Self::DnnNotSupportedInSlice => write!(f, "DNN not supported in slice"),
-            Self::InsufficientUserPlaneResourcesForPduSessio => {
-                write!(f, "Insufficient user plane resources for PDU session")
-            }
-            Self::OutOfLadnServiceArea => write!(f, "Out of LADN service area"),
-            Self::PtiMismatch => write!(f, "PTI mismatch"),
-            Self::MaxDataRateForUserPlaneIntegrityTooLow => {
-                write!(f, "Max data rate for user plane integrity too low")
-            }
-            Self::SemanticErrorInQosOperation => write!(f, "Semantic error in QoS operation"),
-            Self::SyntacticalErrorInQosOperation => write!(f, "Syntactical error in QoS operation"),
-            Self::InvalidMappedEpsBearerIdentity => write!(f, "Invalid mapped EPS bearer identity"),
-            Self::RedirectionTo5GcnRequired => write!(f, "Redirection to 5GCN required"),
-            Self::RedirectionToEpcRequired => write!(f, "Redirection to EPC required"),
-            Self::TemporarilyUnauthorizedForSnpn => write!(f, "Temporarily unauthorized for SNPN"),
-            Self::PermanentlyUnauthorizedForSnpn => write!(f, "Permanently unauthorized for SNPN"),
-            Self::EthernetOnlyAllowed => write!(f, "Ethernet only allowed"),
-            Self::UnauthorizedForCag => write!(f, "Unauthorized for CAG"),
-            Self::NoNetworkSlicesAvailable => write!(f, "No network slices available"),
-            Self::WirelineAccessAreaNotAllowed => write!(f, "Wireline access area not allowed"),
-        }
+        Self::Unknown
     }
 }
 
