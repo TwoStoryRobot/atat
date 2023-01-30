@@ -17,7 +17,7 @@ mod seq;
 pub type Result<T> = core::result::Result<T, Error>;
 
 /// This type represents all possible errors that can occur when deserializing AT Command strings
-#[derive(Debug, PartialEq, Eq)]
+#[derive(PartialEq, Eq)]
 #[non_exhaustive]
 pub enum Error {
     /// EOF while parsing an object.
@@ -638,6 +638,12 @@ impl de::Error for Error {
     }
 }
 
+impl core::fmt::Debug for Error {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Deserializing error")
+    }
+}
+
 impl de::StdError for Error {}
 
 impl fmt::Display for Error {
@@ -706,29 +712,29 @@ mod tests {
     use heapless_bytes::Bytes;
     use serde_derive::Deserialize;
 
-    #[derive(Debug, Clone, Deserialize, PartialEq)]
+    #[derive(Clone, Deserialize, PartialEq)]
     struct CFG {
         p1: u8,
         p2: i16,
         p3: bool,
     }
 
-    #[derive(Debug, Deserialize, PartialEq)]
+    #[derive(Deserialize, PartialEq)]
     struct CFGOption {
         p1: u8,
         p2: i16,
         p3: Option<bool>,
     }
 
-    #[derive(Clone, Debug, Deserialize, PartialEq)]
+    #[derive(Clone, Deserialize, PartialEq)]
     pub struct CCID {
         pub ccid: u128,
     }
 
-    #[derive(Clone, Debug, PartialEq, Deserialize)]
+    #[derive(Clone, PartialEq, Deserialize)]
     struct Handle(pub usize);
 
-    #[derive(Clone, Debug, PartialEq, Deserialize)]
+    #[derive(Clone, PartialEq, Deserialize)]
     struct CharHandle(pub char);
 
     #[test]
@@ -773,7 +779,7 @@ mod tests {
     }
     #[test]
     fn simple_string() {
-        #[derive(Clone, Debug, Deserialize, PartialEq)]
+        #[derive(Clone, Deserialize, PartialEq)]
         pub struct StringTest {
             pub string: String<32>,
         }
@@ -788,7 +794,7 @@ mod tests {
 
     #[test]
     fn cgmi_string() {
-        #[derive(Clone, Debug, Deserialize, PartialEq)]
+        #[derive(Clone, Deserialize, PartialEq)]
         pub struct CGMI {
             pub id: Bytes<32>,
         }

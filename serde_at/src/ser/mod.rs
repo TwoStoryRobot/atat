@@ -44,11 +44,16 @@ impl<'a> Default for SerializeOptions<'a> {
 
 /// This type represents all possible errors that can occur when serializing AT
 /// Command strings
-#[derive(Debug)]
 #[non_exhaustive]
 pub enum Error {
     /// Buffer is full
     BufferFull,
+}
+
+impl core::fmt::Debug for Error {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Deserializing error")
+    }
 }
 
 impl From<()> for Error {

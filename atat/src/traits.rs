@@ -209,7 +209,7 @@ mod test {
     use atat_derive::{AtatEnum, AtatResp};
     use heapless::String;
 
-    #[derive(Debug, Clone, PartialEq, AtatEnum)]
+    #[derive(Clone, PartialEq, AtatEnum)]
     pub enum PDPContextStatus {
         /// 0: deactivated
         Deactivated = 0,
@@ -217,7 +217,7 @@ mod test {
         Activated = 1,
     }
 
-    #[derive(Debug, Clone, AtatResp, PartialEq)]
+    #[derive(Clone, AtatResp, PartialEq)]
     pub struct PDPContextState {
         #[at_arg(position = 0)]
         pub cid: u8,
@@ -225,7 +225,7 @@ mod test {
         pub status: PDPContextStatus,
     }
 
-    #[derive(Debug, Clone, AtatResp, PartialEq)]
+    #[derive(Clone, AtatResp, PartialEq)]
     pub struct PDPContextDefinition {
         #[at_arg(position = 0)]
         pub cid: u8,

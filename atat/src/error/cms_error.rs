@@ -3,7 +3,7 @@
 ///
 /// 0 -> 127 per 3GPP TS 24.011 [6] clause E.2 128 -> 255 per 3GPP TS 23.040 [3]
 /// clause 9.2.3.22
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy, PartialEq, Eq)]
 #[repr(u16)]
 pub enum CmsError {
     /// nick=MeFailure
@@ -87,37 +87,6 @@ impl From<u16> for CmsError {
 impl CmsError {
     pub const fn from_msg(s: &[u8]) -> Self {
         Self::Unknown
-    }
-}
-
-#[cfg(feature = "fmt")]
-impl core::fmt::Display for CmsError {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        match self {
-            Self::MeFailure => write!(f, "ME failure"),
-            Self::SmsServiceReserved => write!(f, "SMS service reserved"),
-            Self::NotAllowed => write!(f, "Operation not allowed"),
-            Self::NotSupported => write!(f, "Operation not supported"),
-            Self::InvalidPduParameter => write!(f, "Invalid PDU mode parameter"),
-            Self::InvalidTextParameter => write!(f, "Invalid text mode parameter"),
-            Self::SimNotInserted => write!(f, "SIM not inserted"),
-            Self::SimPin => write!(f, "SIM PIN required"),
-            Self::PhSimPin => write!(f, "PH-SIM PIN required"),
-            Self::SimFailure => write!(f, "SIM failure"),
-            Self::SimBusy => write!(f, "SIM busy"),
-            Self::SimWrong => write!(f, "SIM wrong"),
-            Self::SimPuk => write!(f, "SIM PUK required"),
-            Self::SimPin2 => write!(f, "SIM PIN2 required"),
-            Self::SimPuk2 => write!(f, "SIM PUK2 required"),
-            Self::MemoryFailure => write!(f, "Memory failure"),
-            Self::InvalidIndex => write!(f, "Invalid index"),
-            Self::MemoryFull => write!(f, "Memory full"),
-            Self::SmscAddressUnknown => write!(f, "SMSC address unknown"),
-            Self::NoNetwork => write!(f, "No network"),
-            Self::NetworkTimeout => write!(f, "Network timeout"),
-            Self::NoCnmaAckExpected => write!(f, "No CNMA acknowledgement expected"),
-            Self::Unknown => write!(f, "Unknown"),
-        }
     }
 }
 

@@ -81,10 +81,10 @@ mod tests {
         };
     }
 
-    #[derive(Debug, PartialEq, AtatResp)]
+    #[derive(PartialEq, AtatResp)]
     struct NoResponse {}
 
-    #[derive(Debug, PartialEq, AtatEnum)]
+    #[derive(PartialEq, AtatEnum)]
     enum SimpleEnum {
         #[at_arg(default, value = 0)]
         A,
@@ -95,7 +95,7 @@ mod tests {
         #[at_arg(value = 3)]
         D,
     }
-    #[derive(Debug, PartialEq, AtatEnum)]
+    #[derive(PartialEq, AtatEnum)]
     #[at_enum(u32)]
     enum SimpleEnumU32 {
         #[at_arg(default)]
@@ -105,7 +105,7 @@ mod tests {
         D,
     }
 
-    #[derive(Debug, PartialEq, AtatEnum)]
+    #[derive(PartialEq, AtatEnum)]
     enum MixedEnum<'a> {
         #[at_arg(value = 0)]
         UnitVariant,
@@ -126,7 +126,7 @@ mod tests {
         SingleSimpleTupleLifetime(#[at_arg(len = 10)] &'a str),
     }
 
-    #[derive(Debug, PartialEq, AtatCmd)]
+    #[derive(PartialEq, AtatCmd)]
     #[at_cmd("+CFUN", NoResponse)]
     struct LengthTester<'a> {
         x: u8,

@@ -9,7 +9,7 @@ use crate::helpers::LossyStr;
 use crate::traits::{AtatClient, AtatCmd, AtatUrc};
 use crate::Config;
 
-#[derive(Debug, PartialEq)]
+#[derive(PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 enum ClientState {
     Idle,
@@ -17,7 +17,7 @@ enum ClientState {
 }
 
 /// Whether the AT client should block while waiting responses or return early.
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[derive(Copy, Clone, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Mode {
     /// The function call will wait as long as necessary to complete the operation
@@ -316,7 +316,6 @@ mod test {
         }
     }
 
-    #[derive(Debug)]
     pub enum SerialError {}
 
     impl serial::Error for SerialError {
@@ -369,7 +368,7 @@ mod test {
         }
     }
 
-    #[derive(Debug, PartialEq, Eq)]
+    #[derive(PartialEq, Eq)]
     pub enum InnerError {
         Test,
     }
@@ -383,7 +382,7 @@ mod test {
         }
     }
 
-    #[derive(Debug, PartialEq, AtatCmd)]
+    #[derive(PartialEq, AtatCmd)]
     #[at_cmd("+CFUN", NoResponse, error = "InnerError")]
     struct ErrorTester {
         x: u8,
@@ -449,10 +448,10 @@ mod test {
         #[at_arg(value = 1)]
         Reset,
     }
-    #[derive(Clone, AtatResp, PartialEq, Debug)]
+    #[derive(Clone, AtatResp, PartialEq)]
     pub struct NoResponse;
 
-    #[derive(Clone, AtatResp, PartialEq, Debug)]
+    #[derive(Clone, AtatResp, PartialEq)]
     pub struct TestResponseString {
         #[at_arg(position = 0)]
         pub socket: u8,
@@ -462,7 +461,7 @@ mod test {
         pub data: String<64>,
     }
 
-    #[derive(Clone, AtatResp, PartialEq, Debug)]
+    #[derive(Clone, AtatResp, PartialEq)]
     pub struct TestResponseStringMixed {
         #[at_arg(position = 1)]
         pub socket: u8,
@@ -472,7 +471,7 @@ mod test {
         pub data: String<64>,
     }
 
-    #[derive(Debug, Clone, AtatResp, PartialEq)]
+    #[derive(Clone, AtatResp, PartialEq)]
     pub struct MessageWaitingIndication {
         #[at_arg(position = 0)]
         pub status: u8,
@@ -480,7 +479,7 @@ mod test {
         pub code: u8,
     }
 
-    #[derive(Debug, Clone, AtatUrc, PartialEq)]
+    #[derive(Clone, AtatUrc, PartialEq)]
     pub enum Urc {
         #[at_urc(b"+UMWI")]
         MessageWaitingIndication(MessageWaitingIndication),

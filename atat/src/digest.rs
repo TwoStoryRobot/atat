@@ -2,7 +2,7 @@ use core::marker::PhantomData;
 
 use crate::InternalError;
 
-#[derive(Debug, PartialEq)]
+#[derive(PartialEq)]
 pub enum DigestResult<'a> {
     Urc(&'a [u8]),
     Response(Result<&'a [u8], InternalError<'a>>),

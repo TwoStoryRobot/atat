@@ -217,7 +217,7 @@ macro_rules! unwrap {
     }
 }
 
-#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+#[derive(Copy, Clone, Eq, PartialEq)]
 pub struct NoneError;
 
 pub trait Try {

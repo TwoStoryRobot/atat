@@ -267,7 +267,7 @@ pub use traits::{AtatClient, AtatCmd, AtatResp, AtatUrc};
 /// client.
 ///
 /// [`Command`]: enum.Command.html
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[derive(Copy, Clone, Hash, PartialEq, Eq)]
 pub struct Config {
     mode: Mode,
     cmd_cooldown: u32,
